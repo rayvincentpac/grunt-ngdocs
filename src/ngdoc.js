@@ -985,7 +985,7 @@ var GLOBALS = /^angular\.([^\.]+)$/,
     MODULE_DIRECTIVE = /^(.+)\.directives?:([^\.]+)$/,
     MODULE_DIRECTIVE_INPUT = /^(.+)\.directives?:input\.([^\.]+)$/,
     MODULE_CUSTOM = /^(.+)\.([^\.]+):([^\.]+)$/,
-    MODULE_SERVICE = /^(.+)\.([^\.]+?)(Provider)?$/,
+    MODULE_SERVICE = /^(.+)\.service?:(.+?)(Provider)?$/,
     MODULE_TYPE = /^([^\.]+)\..+\.([A-Z][^\.]+)$/;
 
 

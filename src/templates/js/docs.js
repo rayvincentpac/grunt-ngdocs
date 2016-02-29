@@ -229,14 +229,14 @@ docsApp.serviceFactory.sections = function serviceFactory() {
 docsApp.controller.DocsController = function($scope, $location, $window, sections) {
   var INDEX_PATH = /^(\/|\/index[^\.]*.html)$/,
       GLOBALS = /^angular\.([^\.]+)$/,
-      MODULE = /^([^\.]+)$/,
-      MODULE_MOCK = /^angular\.mock\.([^\.]+)$/,
-      MODULE_CONTROLLER = /^(.+)\.controllers?:([^\.]+)$/,
-      MODULE_DIRECTIVE = /^(.+)\.directives?:([^\.]+)$/,
-      MODULE_DIRECTIVE_INPUT = /^(.+)\.directives?:input\.([^\.]+)$/,
-      MODULE_FILTER = /^(.+)\.filters?:([^\.]+)$/,
-      MODULE_CUSTOM = /^(.+)\.([^\.]+):([^\.]+)$/,
-      MODULE_SERVICE = /^(.+)\.([^\.]+?)(Provider)?$/,
+      MODULE = /^(.+)$/,
+      MODULE_MOCK = /^angular\.mock\.(.+)$/,
+      MODULE_CONTROLLER = /^(.+)\.controllers?:(.+)$/,
+      MODULE_DIRECTIVE = /^(.+)\.directives?:(.+)$/,
+      MODULE_DIRECTIVE_INPUT = /^(.+)\.directives?:input\.(.+)$/,
+      MODULE_FILTER = /^(.+)\.filters?:(.+)$/,
+      MODULE_CUSTOM = /^(.+)\.([^\.]+):(.+)$/,
+      MODULE_SERVICE = /^(.+)\.service?:(.+?)(Provider)?$/,
       MODULE_TYPE = /^([^\.]+)\..+\.([A-Z][^\.]+)$/;
 
 
@@ -313,9 +313,6 @@ docsApp.controller.DocsController = function($scope, $location, $window, section
         breadcrumb.push({ name: 'angular.Module' });
       } else if (match = partialId.match(GLOBALS)) {
         breadcrumb.push({ name: partialId });
-      } else if (match = partialId.match(MODULE)) {
-        match[1] = page.moduleName || match[1];
-        breadcrumb.push({ name: match[1] });
       } else if (match = partialId.match(MODULE_FILTER)) {
         match[1] = page.moduleName || match[1];
         breadcrumb.push({ name: match[1], url: sectionPath + '/' + match[1] });
@@ -349,6 +346,9 @@ docsApp.controller.DocsController = function($scope, $location, $window, section
         }
       } else if (match = partialId.match(MODULE_MOCK)) {
         breadcrumb.push({ name: 'angular.mock.' + match[1] });
+      } else if (match = partialId.match(MODULE)) {
+        match[1] = page.moduleName || match[1];
+        breadcrumb.push({ name: match[1] });
       } else {
         breadcrumb.push({ name: page.shortName });
       }
@@ -405,8 +405,6 @@ docsApp.controller.DocsController = function($scope, $location, $window, section
         module('ng', section).types.push(page);
       } else if (match = id.match(GLOBALS)) {
         module('ng', section).globals.push(page);
-      } else if (match = id.match(MODULE)) {
-        module(page.moduleName || match[1], section);
       } else if (match = id.match(MODULE_FILTER)) {
         module(page.moduleName || match[1], section).filters.push(page);
       } else if (match = id.match(MODULE_CONTROLLER) && page.type === 'controller') {
@@ -438,6 +436,8 @@ docsApp.controller.DocsController = function($scope, $location, $window, section
         }
       } else if (match = id.match(MODULE_MOCK)) {
         module('ngMock', section).globals.push(page);
+      } else if (match = id.match(MODULE)) {
+        module(page.moduleName || match[1], section);
       }
 
     });
