@@ -3,18 +3,6 @@ img.AngularJS-small {
   height: 25px;
 }
 
-/* this is here to avoid the display=block shuffling of ngShow */
-.breadcrumb li > * {
-  float:left;
-  margin:0 2px 0 0;
-}
-
-.breadcrumb {
-  padding-top: 6px;
-  padding-bottom: 0;
-  line-height: 18px
-}
-
 .navbar img {
   max-height: 40px;
   padding-right: 20px;
@@ -46,34 +34,36 @@ img.AngularJS-small {
 
 /* =============================== */
 
-.form-search {
-  margin-right: 10px;
+.module-nav .search .glyphicon-search {
+  top: 0px;
 }
 
-.form-search .search-query {
-  width: 180px;
-  width: 200px \9;
-}
-
-.form-search .dropdown-menu {
+.module-nav .dropdown-menu {
   margin-left: 10px;
 }
 
-.form-search .code {
+.module-nav .code {
   font-family: monospace;
   font-weight: bold;
   font-size: 13px;
   color: black;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex-grow: 1;
 }
 
-.form-search > ul.nav > li > a {
-  margin: 0;
+.module-nav .panel .list-group .list-group-item {
+    background-color: inherit;
+    border-color: #DDDDDD;
 }
 
-.form-search > ul.nav > li.module {
+.module-nav .panel .panel-heading {
+  display: flex;
+}
+
+.module-nav .panel .panel-heading.module {
   background-color: #d3d3d3;
+  font-weight: bold;
 }
 
 .form-search > ul.nav > li.section {
@@ -81,81 +71,42 @@ img.AngularJS-small {
   min-height: 14px;
 }
 
-.form-search > ul.nav > li.first {
-  padding-top: 6px;
+.module-nav .panel a {
+  display: block;
 }
 
-.form-search > ul.nav > li.last {
-  padding-bottom: 6px;
-}
-
-.form-search > ul.nav > li.last + li.api-list-item {
-  margin-top: -6px;
-  padding-bottom: 6px;
-}
-
-.form-search .well {
-  border-color: #d3d3d3;
-  padding: 0;
-  margin-bottom: 15px;
-}
-
-.form-search .well .nav-header {
+.module-nav .panel .panel-heading a {
   text-transform: none;
-  padding: 3px 1px;
-  margin: 0;
-}
-
-.form-search .well .nav-header a {
-  text-transform: none;
+  text-decoration: none;
   color: black;
 }
-.form-search .well .nav-header a:hover {
+
+.module-nav .panel .panel-heading a:hover {
   background-color: inherit;
 }
 
-.form-search .well li {
-  line-height: 14px;
-}
-
-.form-search .well li a:focus {
+.module-nav .panel a:focus {
 	outline: none;
 }
 
-.form-search .well .guide {
-  float: right;
-  padding-top: 0;
+.module-nav .panel .panel-heading .guide {
+  flex-shrink: 0;
+  flex-grow: 0;
   color: gray;
+  font-weight: normal;
 }
 
-.form-search .module .guide {
-  line-height: 20px;
-}
-
-.match > a, .nav > .match > a:hover {
-	background-color: #dbeaf4;
+.module-nav .panel .panel-heading .guide:only-child {
+    flex-grow: 1;
+    text-align: right;
 }
 
 /* =============================== */
 /*            Content              */
 /* =============================== */
 
-.edit-example {
-  margin-top: 9px;
-}
-
 .improve-docs, .view-source, .edit-example {
   float: right;
-  margin-left: 35px;
-  position: relative;
-}
-
-.improve-docs i, .view-source i, .edit-example i {
-  position: absolute;
-  left: -20px;
-  top: 50%;
-  margin-top: -.5em;
-  text-decoration: none !important;
 }
 
 .methods .view-source {
@@ -289,6 +240,7 @@ ul.events > li > h3 {
 
 .type-hint {
   display:inline-block;
+  background-color: #999;
 }
 
 .variables-matrix .type-hint {

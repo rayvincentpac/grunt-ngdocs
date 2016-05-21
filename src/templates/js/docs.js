@@ -79,8 +79,8 @@ docsApp.directive.code = function() {
 
 docsApp.directive.sourceEdit = function(getEmbeddedTemplate) {
   return NG_DOCS.editExample ? {
-    template: '<a class="edit-example pull-right" ng-click="plunkr($event)" href>' +
-      '<i class="icon-edit"></i> Edit in Plunkr</a>',
+    template: '<button type="button" class="btn btn-primary edit-example" ng-click="plunkr($event)" href>' +
+      '<span class="glyphicon glyphicon-edit glyphicon-align-left"></span> Edit in Plunkr</button>',
     scope: true,
     controller: function($scope, $attrs, openPlunkr) {
       var sources = {

@@ -487,8 +487,8 @@ Doc.prototype = {
     if (this.options.editLink) {
       dom.tag('a', {
           href: self.options.editLink(self.file, self.line, self.codeline),
-          class: 'improve-docs' }, function(dom) {
-        dom.tag('i', {class:'icon-edit'}, ' ');
+          class: 'btn btn-primary view-source icon-eye-open' }, function(dom) {
+        dom.tag('span', {class:'glyphicon glyphicon-edit glyphicon-align-left'}, ' ');
         dom.text('Improve this doc');
       });
     }
@@ -517,7 +517,7 @@ Doc.prototype = {
       dom.h('Dependencies', self.requires, function(require){
         dom.tag('code', function() {
           var id = require.name[0] == '$' ? 'ng.' + require.name : require.name,
-              name = require.name.split(/[\.:\/]/).pop();
+              name = require.name.split(':').pop();
           dom.tag('a', {href: self.convertUrlToAbsolute(id)}, name);
         });
         dom.html(require.text);
@@ -885,6 +885,10 @@ Doc.prototype = {
     this.html_usage_interface(dom)
   },
 
+  html_usage_type: function(dom) {
+    this.html_usage_interface(dom)
+  },
+
   html_usage_object: function(dom) {
     this.html_usage_interface(dom)
   },
@@ -901,8 +905,10 @@ Doc.prototype = {
           if (self.options.sourceLink) {
             dom.tag('a', {
               href: self.options.sourceLink(method.file, method.line, method.codeline),
-              class: 'view-source icon-eye-open'
-            }, ' ');
+              class: 'btn btn-primary view-source icon-eye-open'
+            }, function() {
+              dom.tag('span', {class: 'glyphicon glyphicon-eye-open glyphicon-align-left'})
+            });
           }
           //filters out .IsProperty parameters from the method signature
           var signature = (method.param || []).filter(function(e) { return e.isProperty !== true; }).map(property('name'));
@@ -921,6 +927,29 @@ Doc.prototype = {
       dom.div({class:'member property'}, function(){
         dom.h('Properties', self.properties, function(property){
           dom.h(property.shortName, function() {
+            var type = property.type.replace(/[{}]/g, '');
+            var optional = (type.slice(-1) === '=');
+            var nullable = (type.slice(0, 1) === '?');
+            if(optional)
+            {
+              type = type.slice(0, -1);
+            }
+            if(nullable)
+            {
+              type = type.slice(1, type.length);
+            }
+
+            dom.html('<a href="" class="' + self.prepare_type_hint_class_name(type) + '">');
+            dom.text(type);
+            dom.html('</a>');
+            if(nullable)
+            {
+              dom.html('&nbsp;<span class="label label-default">nullable</span>');
+            }
+            if(optional)
+            {
+              dom.html('&nbsp;<span class="label label-warning">optional</span>');
+            }
             dom.html(property.description);
             if (!property.html_usage_returns) {
               console.log(property);
@@ -986,7 +1015,7 @@ var GLOBALS = /^angular\.([^\.]+)$/,
     MODULE_DIRECTIVE_INPUT = /^(.+)\.directives?:input\.([^\.]+)$/,
     MODULE_CUSTOM = /^(.+)\.([^\.]+):([^\.]+)$/,
     MODULE_SERVICE = /^(.+)\.service?:(.+?)(Provider)?$/,
-    MODULE_TYPE = /^([^\.]+)\..+\.([A-Z][^\.]+)$/;
+    MODULE_TYPE = /^(.+)\.type:(.+)$/;
 
 
 function title(doc) {
@@ -1038,7 +1067,7 @@ function title(doc) {
     return makeTitle('input [' + match[2] + ']', 'directive', 'module', match[1]);
   } else if (match = text.match(MODULE_CUSTOM)) {
     return makeTitle(match[3], doc.ngdoc || match[2], 'module', match[1]);
-  } else if (match = text.match(MODULE_TYPE) && doc.ngdoc === 'type') {
+  } else if ((match = text.match(MODULE_TYPE)) && doc.ngdoc === 'type') {
     return makeTitle(match[2], 'type', 'module', module || match[1]);
   } else if (match = text.match(MODULE_SERVICE)) {
     if (overview) {
